@@ -1,10 +1,7 @@
 import React from "react";
-import * as c3 from "c3";
 import sc from "styled-components";
 import axios from "axios";
-import Chart from "chart.js";
-
-let myLineChart;
+import LineChart from "./LineChart" 
 
 const LayoutBox = sc.div`
 display: block;
@@ -66,37 +63,10 @@ td {
 
 
 
-class Panel extends React.Component {
-  chartRef = React.createRef();
-
-  componentDidMount() {
-    this.buildChart();
-  }
-
-  componentDidUpdate() {
-    this.buildChart();
-  }
-
-  buildChart = () => {
-    const myChartRef = this.chartRef.current.getContext("2d");
-    const { date_list, value_list } = this.props;
-
-    if (typeof myLineChart !== "undefined") myLineChart.destroy();
-
-    myLineChart = new Chart(myChartRef, {
-      type: "line",
-      data: {
-        labels: ["a","b"],
-        datasets: [
-          {
-            label: "Timeseries return",
-            data: [1,2]
-          }
-        ]
-      }
-    });
-
-
+class PMPerformance extends React.Component {
+  state = {
+    date_list: ["a", "b"],
+    value_list: [1, 2]
   }
 
   changeData = () => {
@@ -110,21 +80,17 @@ class Panel extends React.Component {
         console.log(body);
         this.setState({
           date_list: body["date_list"],
-          column1: body["value_list"]
+          value_list: body["value_list"]
         })
-        console.log(body["date_list"])
-        this.chart.data.labels = body["date_list"]
-        this.chart.data.datasets[0].data = body["value_list"]
-        this.chart.update();
       });
   }
 
   render() {
     return (
       <div>
-        <canvas
-          style={{ width: 800, height: 300 }}
-          ref={this.chartRef}
+        <LineChart
+          date_list={this.state.date_list}
+          value_list={this.state.value_list}
         />
         <button onClick={this.changeData}>Change</button>
       </div>
@@ -132,4 +98,4 @@ class Panel extends React.Component {
   }
 }
 
-export default Panel;
+export default PMPerformance;

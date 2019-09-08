@@ -5,7 +5,7 @@ import "react-tabs/style/react-tabs.css";
 import { GlobalHotKeys } from "react-hotkeys";
 import sc from "styled-components";
 
-import Panel from "components/Timeseries_chartjs"
+import PMPerformance from "components/line/pm_performance/PMPerformance"
 
 const TabBody = sc.div`
 display: block;
@@ -35,7 +35,7 @@ class MainBoard extends React.Component {
       return (
         <TabPanel key={i}>
           <TabBody>
-            <Panel />
+            <PMPerformance />
           </TabBody>
         </TabPanel>
       )
@@ -47,7 +47,7 @@ class MainBoard extends React.Component {
       <GlobalHotKeys keyMap={keyMap} handlers={this.handlers}>
         <Tabs selectIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
           <TabList>
-            <Tab>Timeseries[1]</Tab>
+            <Tab>Line[1]</Tab>
           </TabList>
           {this.generateDOM()}
         </Tabs>
