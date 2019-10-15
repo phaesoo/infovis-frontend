@@ -1,6 +1,6 @@
 import React from "react";
 import './App.css';
-import MainBoard from "components/MainBoard"
+import MainBoard from "pages/MainBoard"
 import "c3/c3.css";
 
 

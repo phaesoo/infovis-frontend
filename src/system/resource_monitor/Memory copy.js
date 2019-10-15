@@ -1,7 +1,7 @@
 import React from "react";
+import * as c3 from "c3";
 import sc from "styled-components";
 import axios from "axios";
-import LineChart from "./LineChart" 
 
 const LayoutBox = sc.div`
 display: block;
@@ -16,7 +16,7 @@ const Title = sc.div`
 border-top-left-radius: 4px;
 border-top-right-radius: 4px;
 background: -webkit-linear-gradient(top, #536a75 0%, #011823);
-padding: 2px 5px;
+padding: 2px 5px; 
 color: #fff;
 height: 22px;
 cursor: move;
@@ -53,7 +53,7 @@ th {
   text-align: center;
 };
 td {
-  border: solid 1px #CCC;hf_estimate_summary.funda1.ibes
+  border: solid 1px #CCC;
   color: #333;
   padding: 2px 5px;
   text-shadow: 1px 1px 1px #fff;
@@ -63,10 +63,49 @@ td {
 
 
 
-class PMPerformance extends React.Component {
+class Memory extends React.Component {
   state = {
-    date_list: ["a", "b"],
-    value_list: [1, 2]
+    date_list: ["date_list"],
+    column1: ["data1"],
+    //column2: ['data2', 100, 1, 50, 140, 150, 80],
+  }
+
+  renderChart() {
+    c3.generate({
+      bindto: "#chart1",
+      data: {
+        x: 'x',
+        columns: [
+          ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
+//            ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
+          ['y', 130, 340, 200, 500, 250, 350],
+          ['data1', 50, 200, 100, 400, 150, 250],
+        ],
+        type: "area-spline",
+        groups: [['data1', 'data2']],
+        grid: {
+          y: {
+            show: true
+          }
+        }
+      },
+      axis: {
+        x: {
+          type: "timeseries",
+          tick: {
+            format: "%Y-%m-%d %H:%M:%S"
+          },
+        }
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.renderChart();
+  }
+
+  componentDidUpdate() {
+    this.renderChart();
   }
 
   changeData = () => {
@@ -77,25 +116,21 @@ class PMPerformance extends React.Component {
     axios.post("http://192.168.0.9:5001/api/timeseries/portfolio-performance/cum_return", form)
       .then(response => {
         const body = response.data.data;
-        console.log(body);
         this.setState({
-          date_list: body["date_list"],
-          value_list: body["value_list"]
+          date_list: ["date_list"].concat(body["date_list"]),
+          column1: ["data2"].concat(body["value_list"])
         })
       });
   }
 
   render() {
     return (
-      <div>
-        <LineChart
-          date_list={this.state.date_list}
-          value_list={this.state.value_list}
-        />
+      <LayoutBox>
+        <div id="chart1"></div>
         <button onClick={this.changeData}>Change</button>
-      </div>
+      </LayoutBox>
     );
   }
 }
 
-export default PMPerformance;
+export default Memory;

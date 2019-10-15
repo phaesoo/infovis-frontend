@@ -5,7 +5,8 @@ import "react-tabs/style/react-tabs.css";
 import { GlobalHotKeys } from "react-hotkeys";
 import sc from "styled-components";
 
-import PMPerformance from "components/line/pm_performance/PMPerformance"
+import PMPerformance from "system/pm_performance/PMPerformance"
+import Memory from "system/resource_monitor/Memory"
 
 const TabBody = sc.div`
 display: block;
@@ -36,6 +37,7 @@ class MainBoard extends React.Component {
         <TabPanel key={i}>
           <TabBody>
             <PMPerformance />
+            <Memory />
           </TabBody>
         </TabPanel>
       )
